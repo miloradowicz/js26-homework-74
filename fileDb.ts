@@ -4,6 +4,18 @@ import { messagesDir } from './constants';
 import { Message, MessageBody } from './types';
 
 const fileDb = {
+  async init() {
+    try {
+      const stat = await fs.stat(messagesDir);
+
+      if (!stat.isDirectory()) {
+        await fs.rm(messagesDir);
+        await fs.mkdir(messagesDir);
+      }
+    } catch {
+      await fs.mkdir(messagesDir);
+    }
+  },
   async readLastMessages(count?: number) {
     if (count !== undefined && !Number.isInteger(count)) {
       throw new Error('Invalid argument. Count must be integer.');
