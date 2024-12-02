@@ -33,7 +33,9 @@ const fileDb = {
 
     return { ...body, datetime: datetimeISO };
   },
-  async writeMessage(body: MessageBody, datetime: Date) {
+  async writeMessage(message: Message) {
+    const { datetime, ...body } = message;
+
     const datetimeISO = datetime.toISOString();
 
     return await fs.writeFile(
